@@ -1,6 +1,15 @@
 @import "modules/responsive.scss";
 
+@font-face {
+	font-family: "VarelaRound";
+	src: url('../fonts/VarelaRound-Regular.ttf');
+}
+
 $color: red;
+
+body {
+	font-family: 'VarelaRound';
+}
 
 h1 {
   width: percentage(5/7);
@@ -10,7 +19,7 @@ h1 {
 }
 
 h2 {
-	color: blue;
+	color: green;
 	display: flex;
 }
 

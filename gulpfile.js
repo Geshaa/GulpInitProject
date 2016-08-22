@@ -1,32 +1,42 @@
-//plugins
+//modules
 var gulp 			= require('gulp');
 var sass 			= require('gulp-sass');
 var browserSync 	= require('browser-sync');
-var userref 		= require('gulp-useref');
 var uglify			= require('gulp-uglify');
 var rename 			= require('gulp-rename');
 var concat 			= require('gulp-concat');
 var cssnano			= require('gulp-cssnano');
-var gulpIf 			= require('gulp-if');
 var imagemin 		= require('gulp-imagemin');
-var cache 			= require('gulp-cache');
 var del				= require('del');
 var runSequence 	= require('run-sequence');
 var autoprefixer	= require('gulp-autoprefixer');
 var sourcemaps		= require('gulp-sourcemaps');
+var jshint 			= require('gulp-jshint');
+var plumber			= require('gulp-plumber');
 
 //path variables
 var serverRoot 		= 'public';
 
+var htmlPhpSource	= 'public/*.+(html|php)';
+
 var scssSource		= 'src/scss/**/*.scss';
-var sassDestination = 'public/assets/css';
+var scssDestination = 'public/assets/css';
 var outputCSSFile 	= 'styles.css';
 
 var jsSource		= 'src/js/**/*.js';
+var jsOutputFile	= 'scripts.js'
+var jsOutputMini	= 'scripts.min.js'
+var jsOutputPath	= 'public/assets/js';
+
+var fontsSource		= 'src/fonts/**/*.{ttf,woff,eof,svg}';
+var fontsDest		= 'public/assets/fonts'
+
 var imgSource		= 'src/images/**/*.+(png|jpg|jpeg|gif|svg)';
 var imgDestination 	= 'public/assets/images';
-var fontsSource		= 'src/fonts/**/*';
-var fontsDest		= 'public/assets/fonts'
+
+var onError = function(err) {
+	console.log(err);
+}
 
 var sassOptions = {
 	errLogToConsole: true,
@@ -54,70 +64,79 @@ gulp.task('sass', function() {
 		.pipe(concat(outputCSSFile))
 		.pipe(sourcemaps.write())
     	.pipe(autoprefixer(autoprefixerOptions))
-		.pipe(gulp.dest(sassDestination))
+		.pipe(gulp.dest(scssDestination))
 		.pipe(browserSync.reload({
 			stream:true
 		}));
 });
 
-// copy fonts  - need remove theme
-gulp.task('fonts', function() {
-  return gulp.src('src/fonts/**/*')
-    .pipe(gulp.dest('public/assets/fonts'))
-});
-
-//images  - need to remove theme before
-gulp.task('images', function() {
-	return gulp.src('src/images/**/*.+(png|jpg|jpeg|gif|svg)')
-		.pipe(cache(imagemin({
-			interlaced: true,
-		})))
-		.pipe(gulp.dest('public/assets/images'))
-});
-
 //js files
 gulp.task('scripts', function() {
-    return gulp.src('src/js/**/*.js')
-        .pipe(concat('scripts.js'))
-        .pipe(gulp.dest('public/assets/js'))
-        .pipe(rename('scripts.min.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest('public/assets/js'))
+	return gulp.src(jsSource)
+			.pipe(plumber({
+				errorHandler: onError
+			}))
+			.pipe(jshint())
+			.pipe(jshint.reporter('default'))
+			.pipe(concat(jsOutputFile))
+			.pipe(gulp.dest(jsOutputPath))
+			.pipe(rename(jsOutputMini))
+			.pipe(uglify())
+			.pipe(gulp.dest(jsOutputPath))
 })
+
+// delete fonts
+gulp.task('clean-fonts', function() {
+	del([fontsDest + '/**/*'])
+});
+
+//copy fonts
+gulp.task('fonts', function() {
+  return gulp.src(fontsSource)
+	  .pipe(gulp.dest(fontsDest))
+});
+
+//clean images
+gulp.task('clean-images', function() {
+	del([imgDestination + '/**/*'])
+});
+
+//images
+gulp.task('images', function() {
+	return gulp.src(imgSource)
+		.pipe(imagemin({
+			interlaced: true,
+		}))
+		.pipe(gulp.dest(imgDestination))
+});
+
 
 //watch
 gulp.task('watch', function() {
-	gulp.watch('src/scss/**/*.scss', ['sass']);
-	gulp.watch('public/*.html', browserSync.reload);
-	gulp.watch('public/*.php', browserSync.reload);
-	gulp.watch('src/js/**/*.js', ['scripts',browserSync.reload]);
-	gulp.watch('src/fonts/**/*', ['fonts']);
-	gulp.watch('src/images/**/*.+(png|jpg|jpeg|gif|svg)', ['images']);
+	gulp.watch(scssSource, ['sass']);
+	gulp.watch(jsSource, ['scripts', browserSync.reload]);
+	gulp.watch(htmlPhpSource, browserSync.reload);
+	gulp.watch(fontsSource, ['clean-fonts', 'fonts']);
+	gulp.watch(imgSource, ['clean-images', 'images']);
 });
 
-gulp.task('clean', function() {
-	return del.sync('public').then(function(cb) {
-		return cache.clearAll(cb);
-	});
-});
+// Build Sequences
+gulp.task('default', function(callback) {
+	runSequence(['sass', 'browserSync', 'watch'],
+			callback
+	)
+})
 
-gulp.task('clean:public', function() {
-	return del.sync(['public/**/*', '!public/assets/images', '!public/assets/images/**/*'])
-});
 
+
+
+
+//for production  - need to implement
 gulp.task('cssnano', function() {
 	return gulp.src('src/scss/**/*.scss')
 		.pipe(cssnano())
 		.pipe(gulp.dest('public/assets/css'))
 });
-
-
-// Build Sequences
-gulp.task('default', function(callback) {
-  runSequence(['sass', 'browserSync', 'watch'],
-    callback
-  )
-})
 
 // gulp.task('build', function(callback) {
 //   runSequence(
