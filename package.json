@@ -24,6 +24,8 @@
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^1.6.0",
+    "gulp-svgmin": "^1.2.2",
+    "gulp-svgstore": "^6.0.0",
     "gulp-uglify": "^2.0.0",
     "gulp-uncss": "^1.0.6",
     "jshint": "^2.9.3",

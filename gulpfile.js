@@ -13,6 +13,9 @@ var autoprefixer	= require('gulp-autoprefixer');
 var sourcemaps		= require('gulp-sourcemaps');
 var jshint 			= require('gulp-jshint');
 var plumber			= require('gulp-plumber');
+var svgStore 		= require('gulp-svgstore');
+var svgmin		 	= require('gulp-svgmin');
+
 
 //path variables
 var serverRoot 		= 'public';
@@ -33,6 +36,9 @@ var fontsDest		= 'public/assets/fonts'
 
 var imgSource		= 'src/images/**/*.+(png|jpg|jpeg|gif|svg)';
 var imgDestination 	= 'public/assets/images';
+
+var svgSource		= 'src/svg/*.svg';
+var svgDestination 	= 'public/assets/svg'
 
 var onError = function(err) {
 	console.log(err);
@@ -68,6 +74,13 @@ gulp.task('sass', function() {
 		.pipe(browserSync.reload({
 			stream:true
 		}));
+});
+
+//for production  - css nano
+gulp.task('cssnano', function() {
+	return gulp.src(scssSource)
+			.pipe(cssnano())
+			.pipe(gulp.dest(scssDestination))
 });
 
 //js files
@@ -110,6 +123,14 @@ gulp.task('images', function() {
 		.pipe(gulp.dest(imgDestination))
 });
 
+//svg
+gulp.task('svg-store', function () {
+	return gulp.src(svgSource)
+		.pipe(rename({prefix: 'svg-'}))
+		.pipe(svgmin())
+		.pipe(svgStore())
+		.pipe(gulp.dest(svgDestination));
+});
 
 //watch
 gulp.task('watch', function() {
@@ -118,6 +139,7 @@ gulp.task('watch', function() {
 	gulp.watch(htmlPhpSource, browserSync.reload);
 	gulp.watch(fontsSource, ['clean-fonts', 'fonts']);
 	gulp.watch(imgSource, ['clean-images', 'images']);
+	gulp.watch(svgSource, ['svg-store']);
 });
 
 // Build Sequences
@@ -127,23 +149,15 @@ gulp.task('default', function(callback) {
 	)
 })
 
-
-
-
-
-//for production  - need to implement
-gulp.task('cssnano', function() {
-	return gulp.src('src/scss/**/*.scss')
-		.pipe(cssnano())
-		.pipe(gulp.dest('public/assets/css'))
-});
-
-// gulp.task('build', function(callback) {
-//   runSequence(
-//     'clean:public',
-//     'sass',
-//     'cssnano',
-//     ['images', 'fonts'],
-//     callback
-//   )
-// })
+// Main task before production
+ gulp.task('production', function(callback) {
+   runSequence(
+      'sass',
+   	  'scripts',
+      'cssnano',
+	  'clean-fonts',
+   	  'clean-images'
+     ['images', 'fonts'],
+     callback
+   )
+ })
