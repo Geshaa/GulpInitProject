@@ -1,0 +1,30 @@
+@import "modules/responsive.scss";
+
+$color: red;
+
+h1 {
+  width: percentage(5/7);
+  color: $color;
+  font-size: 3rem;
+  text-decoration: none;
+}
+
+h2 {
+	color: blue;
+	display: flex;
+}
+
+
+abbr {
+	font-size: 20px;
+}
+
+
+h3 {
+	background: red;
+}
+
+
+h5 {
+	border-width: 10px;
+}
