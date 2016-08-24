@@ -1,4 +1,7 @@
-//scripts js
+/* global console:false */
 (function() {
-console.log('aaaaaa ssdjgfhs bb');
+    'use strict';
+    console.log('scripts last');
+
+
 })();

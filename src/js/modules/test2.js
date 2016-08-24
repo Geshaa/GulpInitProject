@@ -1,5 +1,7 @@
+/* global console:false */
 (function() {
- var a = 5;
- var b = 6;
- console.log(a == b);
+    'use strict';
+  var a = 4;
+  var b = 7;
+  console.log(a === b);
 })();

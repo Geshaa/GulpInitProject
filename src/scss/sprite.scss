@@ -1,0 +1,17 @@
+//@mixin svg($encode, $repeat:no-repeat) {
+//  $dataUriPrefix: "url(data:image/svg+xml;base64,";
+//  $dataUriSuffix: ")";
+//  $b64DataUri: `(function(a,b,c){function e(a){a=a.replace(/\r\n/g,'\n');var b='';for(var c=0;c<a.length;c++){var d=a.charCodeAt(c);if(d<128){b+=String.fromCharCode(d)}else if(d>127&&d<2048){b+=String.fromCharCode(d>>6|192);b+=String.fromCharCode(d&63|128)}else{b+=String.fromCharCode(d>>12|224);b+=String.fromCharCode(d>>6&63|128);b+=String.fromCharCode(d&63|128)}}return b}function f(a){var b='';var c,f,g,h,i,j,l;var m=0;a=e(a);while(m<a.length){c=a.charCodeAt(m++);f=a.charCodeAt(m++);g=a.charCodeAt(m++);h=c>>2;i=(c&3)<<4|f>>4;j=(f&15)<<2|g>>6;l=g&63;if(isNaN(f)){j=l=64}else if(isNaN(g)){l=64}b=b+d.charAt(h)+d.charAt(i)+d.charAt(j)+d.charAt(l)}return b}var d='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';return a+f(b)+c})('${dataUriPrefix}','${encode}','${dataUriSuffix}')`;
+//
+//  background-image: $b64DataUri;
+//  background-repeat: $repeat;
+//}
+//
+//#Sprite {
+//  .close-popup ($fill:#B5CCD7,$repeat:no-repeat) {
+//
+//  $svg: ~'<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 16.5 16.5" enable-background="new 0 0 16.5 16.5" xml:space="preserve"><path fill-rule="evenodd" clip-rule="evenodd" fill="${fill}" d="M8.2,16.5C3.7,16.5,0,12.8,0,8.2S3.7,0,8.2,0 c4.6,0,8.3,3.7,8.3,8.2S12.8,16.5,8.2,16.5z M11.1,11.9c-0.2,0-0.4-0.1-0.5-0.2l0,0L8.2,9.3L6,11.6l0,0c-0.1,0.1-0.3,0.2-0.5,0.2 c-0.4,0-0.8-0.3-0.8-0.8c0-0.2,0.1-0.4,0.2-0.5l0,0l2.3-2.3L4.9,6l0,0C4.7,5.8,4.6,5.6,4.6,5.4C4.6,5,5,4.6,5.4,4.6 c0.2,0,0.4,0.1,0.5,0.2l0,0l2.3,2.3l2.3-2.3l0,0c0.1-0.1,0.3-0.2,0.5-0.2c0.4,0,0.8,0.3,0.8,0.8c0,0.2-0.1,0.4-0.2,0.5l0,0L9.3,8.2 l2.3,2.3l0,0c0.1,0.1,0.2,0.3,0.2,0.5C11.9,11.5,11.5,11.9,11.1,11.9z"/></svg>';
+//
+//  .svg($svg,$repeat);
+//}
+//}

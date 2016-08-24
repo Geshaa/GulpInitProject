@@ -12,18 +12,3 @@ a)f=e.a.offsetWidth,g=n.a.offsetWidth,h=p.a.offsetWidth,r();G=setTimeout(F,50)}}
 c.family+'",serif'));z(p,function(a){h=a;r()});w(p,I(c,'"'+c.family+'",monospace'))})})};"undefined"!==typeof module?module.exports=A:(window.FontFaceObserver=A,window.FontFaceObserver.prototype.load=A.prototype.load);}());
 /* jshint ignore: end */
 
-
-/* global console:false */
-(function() {
-    'use strict';
-  var a = 4;
-  var b = 7;
-  console.log(a === b);
-})();
-/* global console:false */
-(function() {
-    'use strict';
-    console.log('scripts last');
-
-
-})();

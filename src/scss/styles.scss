@@ -1,15 +1,21 @@
 @import "modules/responsive.scss";
+@import 'https://fonts.googleapis.com/css?family=Baloo+Chettan|Baloo+Paaji|Baloo+Tamma|Lato|Open+Sans|Oswald|Roboto|Slabo+27px';
+
 
 @font-face {
 	font-family: "VarelaRound";
 	src: url('../fonts/VarelaRound-Regular.ttf');
 }
 
-$color: red;
+$color: green;
 
 body {
-	font-family: 'VarelaRound';
+	//font-family: 'VarelaRound';
+
+	font-family: 'Baloo Paaji', cursive;
 }
+
+
 
 h1 {
   width: percentage(5/7);

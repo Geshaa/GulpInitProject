@@ -13,9 +13,8 @@ var autoprefixer	= require('gulp-autoprefixer');
 var sourcemaps		= require('gulp-sourcemaps');
 var jshint 			= require('gulp-jshint');
 var plumber			= require('gulp-plumber');
-var svgStore 		= require('gulp-svgstore');
+var svgstore 		= require('gulp-svgstore');
 var svgmin		 	= require('gulp-svgmin');
-
 
 //path variables
 var serverRoot 		= 'public';
@@ -26,7 +25,7 @@ var scssSource		= 'src/scss/**/*.scss';
 var scssDestination = 'public/assets/css';
 var outputCSSFile 	= 'styles.css';
 
-var jsSource		= 'src/js/**/*.js';
+var jsSource		= ['src/js/**/!(scripts)*.js', 'src/js/scripts.js'];
 var jsOutputFile	= 'scripts.js'
 var jsOutputMini	= 'scripts.min.js'
 var jsOutputPath	= 'public/assets/js';
@@ -128,7 +127,7 @@ gulp.task('svg-store', function () {
 	return gulp.src(svgSource)
 		.pipe(rename({prefix: 'svg-'}))
 		.pipe(svgmin())
-		.pipe(svgStore())
+		.pipe(svgstore())
 		.pipe(gulp.dest(svgDestination));
 });
 
