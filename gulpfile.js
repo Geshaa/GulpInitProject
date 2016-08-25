@@ -15,6 +15,7 @@ var jshint 			= require('gulp-jshint');
 var plumber			= require('gulp-plumber');
 var svgstore 		= require('gulp-svgstore');
 var svgmin		 	= require('gulp-svgmin');
+var webp 			= require('gulp-webp');
 
 //path variables
 var serverRoot 		= 'public';
@@ -119,6 +120,7 @@ gulp.task('images', function() {
 		.pipe(imagemin({
 			interlaced: true,
 		}))
+			.pipe(webp({quality: 100}))
 		.pipe(gulp.dest(imgDestination))
 });
 
