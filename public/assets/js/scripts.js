@@ -17,13 +17,13 @@ c.family+'",serif'));z(p,function(a){h=a;r()});w(p,I(c,'"'+c.family+'",monospace
 (function() {
     'use strict';
   var a = 4;
-  var b = 7;
+  var b = 8;
   console.log(a === b);
 })();
 /* global console:false */
 (function() {
     'use strict';
-    console.log('scripts last');
+    console.log('scripts lastttt 1234');
 
 
     //var font = new FontFaceObserver('My Family', {

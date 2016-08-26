@@ -17,6 +17,11 @@ var svgstore 		= require('gulp-svgstore');
 var svgmin		 	= require('gulp-svgmin');
 var webp 			= require('gulp-webp');
 
+
+var fs				= require('fs');
+var config 			= JSON.parse(fs.readFileSync('./config.json'));
+
+
 //path variables
 var serverRoot 		= 'public';
 
@@ -26,7 +31,17 @@ var scssSource		= 'src/scss/**/*.scss';
 var scssDestination = 'public/assets/css';
 var outputCSSFile 	= 'styles.css';
 
+//var jsSource		= ['src/js/**/!(scripts)*.js', 'src/js/scripts.js'];
 var jsSource		= ['src/js/**/!(scripts)*.js', 'src/js/scripts.js'];
+
+var jsSource = [];
+
+for(var i in config.scripts) {
+	//console.log(i, config[i]);
+	jsSource.push('src/js/modules/'+config.scripts[i]+'.js');
+}
+jsSource.push('src/js/scripts.js');
+
 var jsOutputFile	= 'scripts.js'
 var jsOutputMini	= 'scripts.min.js'
 var jsOutputPath	= 'public/assets/js';
