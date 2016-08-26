@@ -1,6 +1,5 @@
-@import "modules/responsive.scss";
+@import "sprite.scss";
 @import 'https://fonts.googleapis.com/css?family=Baloo+Chettan|Baloo+Paaji|Baloo+Tamma|Lato|Open+Sans|Oswald|Roboto|Slabo+27px';
-
 
 @font-face {
 	font-family: "VarelaRound";
@@ -14,8 +13,6 @@ body {
 
 	font-family: 'Baloo Paaji', cursive;
 }
-
-
 
 h1 {
   width: percentage(5/7);
@@ -43,3 +40,9 @@ h3 {
 h5 {
 	border-width: 10px;
 }
+
+.icon-back {
+	@include svg-arrow(#6f0043);
+}
+
+@import "modules/responsive.scss";
