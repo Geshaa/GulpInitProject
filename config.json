@@ -1,6 +1,35 @@
 {
-  "scripts": [
-    "JQuery3.1.0",
-    "Browser"
-  ]
+	"serverRoot": "public",
+	"htmlPhpSource": "public/*.+(html|php)",
+	"sass": {
+		"mainFile": "src/scss/styles.scss",
+		"mainSprite": "src/scss/sprite.scss",
+		"mainQueries": "src/scss/mediaQueries.scss",
+		"scssSource": "src/scss/**/*.scss",
+		"scssDestination": "public/assets/css",
+		"outputCSSFile": "styles.css"
+	},
+	"scripts": {
+		"mainFile": "src/js/scripts.js",
+		"mainModulesDir": "src/js/modules/",
+		"jsOutputPath": "public/assets/js",
+		"jsOutputFile": "scripts.js",
+		"jsOutputMinified": "scripts.min.js"
+	},
+	"jsModules": [
+		"JQuery3.1.0",
+		"Browser"
+	],
+	"fonts": {
+		"source": "src/fonts/**/*.{ttf,woff,eof,svg}",
+		"destination": "public/assets/fonts"
+	},
+	"images": {
+		"source": "src/images/**/*.+(png|jpg|jpeg|gif|svg)",
+		"destination": "public/assets/images"
+	},
+	"svg": {
+		"source": "src/svg/*.svg'",
+		"destination": "public/assets/svg"
+	}
 }

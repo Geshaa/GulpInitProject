@@ -30,18 +30,15 @@ input[type=number] {
 }
 
 
-
 //sample test
 // h1 {
 //   width: percentage(5/7);
 //   font-size: 4rem;
 //   padding: 20px;
+//   color: blue;
 // }
 
 
 // .icon-back {
-// 	@include svg-arrow(#6f0043);
+// 	@include svg-arrow();
 // }
-
-
-@import "modules/mediaQueries.scss";

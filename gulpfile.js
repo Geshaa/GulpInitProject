@@ -18,42 +18,17 @@ var svgmin		 	= require('gulp-svgmin');
 var webp 			= require('gulp-webp');
 var htmlmin 		= require('gulp-htmlmin');
 
-
+//configuration - based on config.json
 var fs				= require('fs');
 var config 			= JSON.parse(fs.readFileSync('./config.json'));
+var jsSource 		= [];
 
-
-//path variables
-var serverRoot 		= 'public';
-
-var htmlPhpSource	= 'public/*.+(html|php)';
-
-var scssSource		= 'src/scss/**/*.scss';
-var scssDestination = 'public/assets/css';
-var outputCSSFile 	= 'styles.css';
-
-// var jsSource		= ['src/js/**/!(scripts)*.js', 'src/js/scripts.js'];
-
-var jsSource = [];
-
-for(var i in config.scripts) {
-	jsSource.push('src/js/modules/'+config.scripts[i]+'.js');
+for(var i in config.jsModules) {
+	jsSource.push(config.scripts.mainModulesDir + config.jsModules[i] + '.js');
 }
 
-jsSource.push('src/js/scripts.js');
+jsSource.push(config.scripts.mainFile);
 
-var jsOutputFile	= 'scripts.js'
-var jsOutputMini	= 'scripts.min.js'
-var jsOutputPath	= 'public/assets/js';
-
-var fontsSource		= 'src/fonts/**/*.{ttf,woff,eof,svg}';
-var fontsDest		= 'public/assets/fonts'
-
-var imgSource		= 'src/images/**/*.+(png|jpg|jpeg|gif|svg)';
-var imgDestination 	= 'public/assets/images';
-
-var svgSource		= 'src/svg/*.svg';
-var svgDestination 	= 'public/assets/svg'
 
 var onError = function(err) {
 	console.log(err);
@@ -72,20 +47,20 @@ var autoprefixerOptions = {
 gulp.task('browserSync', function() {
 	browserSync({
 		server: {
-			baseDir: serverRoot
+			baseDir: config.serverRoot
 		}
 	})
 });
 
-//Sass task
+//Sass task  - 3 files are required
 gulp.task('sass', function() {
-	return gulp.src(scssSource)
+	return gulp.src([config.sass.mainSprite, config.sass.mainFile, config.sass.mainQueries])
 		.pipe(sourcemaps.init({loadMaps: true}))
 		.pipe(sass(sassOptions).on('error', sass.logError))
-		.pipe(concat(outputCSSFile))
+		.pipe(concat(config.sass.outputCSSFile))
 		.pipe(sourcemaps.write())
     	.pipe(autoprefixer(autoprefixerOptions))
-		.pipe(gulp.dest(scssDestination))
+		.pipe(gulp.dest(config.sass.scssDestination))
 		.pipe(browserSync.reload({
 			stream:true
 		}));
@@ -93,16 +68,16 @@ gulp.task('sass', function() {
 
 //for production  - css nano
 gulp.task('cssnano', function() {
-	return gulp.src(scssSource)
+	return gulp.src(config.sass.scssSource)
 		.pipe(cssnano())
-		.pipe(gulp.dest(scssDestination))
+		.pipe(gulp.dest(config.sass.scssDestination))
 });
 
 //for production - minify html
 gulp.task('html', function() {
-	return gulp.src(htmlPhpSource)
+	return gulp.src(config.htmlPhpSource)
     .pipe(htmlmin({collapseWhitespace: true}))
-    .pipe(gulp.dest('public/'));
+    .pipe(gulp.dest(config.serverRoot));
 });
 
 //js files
@@ -113,62 +88,61 @@ gulp.task('scripts', function() {
 		}))
 		.pipe(jshint())
 		.pipe(jshint.reporter('default'))
-		.pipe(concat(jsOutputFile))
-		.pipe(gulp.dest(jsOutputPath))
-		.pipe(rename(jsOutputMini))
+		.pipe(concat(config.scripts.jsOutputFile))
+		.pipe(gulp.dest(config.scripts.jsOutputPath))
+		.pipe(rename(config.scripts.jsOutputMinified))
 		.pipe(uglify())
-		.pipe(gulp.dest(jsOutputPath))
+		.pipe(gulp.dest(config.scripts.jsOutputPath))
 })
 
 // delete fonts
 gulp.task('clean-fonts', function() {
-	del([fontsDest + '/**/*'])
+	del([config.fonts.destination + '/**/*'])
 });
 
 //copy fonts
 gulp.task('fonts', function() {
-  return gulp.src(fontsSource)
-	  .pipe(gulp.dest(fontsDest))
+  return gulp.src(config.fonts.source)
+	  .pipe(gulp.dest(config.fonts.destination))
 });
 
 //clean images
 gulp.task('clean-images', function() {
-	del([imgDestination + '/**/*'])
+	del([config.images.destination + '/**/*'])
 });
 
 //images
 gulp.task('images', function() {
-	return gulp.src(imgSource)
+	return gulp.src(config.images.source)
 		.pipe(imagemin({
 			interlaced: true,
 		}))
-		.pipe(gulp.dest(imgDestination))
+		.pipe(gulp.dest(config.images.destination))
 });
 
 gulp.task('images-webp', function() {
-	return gulp.src(imgSource)
+	return gulp.src(config.images.source)
 		.pipe(webp({quality: 100}))
-		.pipe(gulp.dest(imgDestination))
+		.pipe(gulp.dest(config.images.destination))
 });
 
 //svg
 gulp.task('svg-store', function () {
-	return gulp.src(svgSource)
+	return gulp.src(config.svg.source)
 		.pipe(rename({prefix: 'svg-'}))
 		.pipe(svgmin())
 		.pipe(svgstore())
-		.pipe(gulp.dest(svgDestination));
+		.pipe(gulp.dest(config.svg.destination));
 });
-
 
 //watch
 gulp.task('watch', function() {
-	gulp.watch(scssSource, ['sass']);
+	gulp.watch(config.sass.scssSource, ['sass']);
 	gulp.watch(jsSource, ['scripts', browserSync.reload]);
-	gulp.watch(htmlPhpSource, browserSync.reload);
-	gulp.watch(fontsSource, ['clean-fonts', 'fonts']);
-	gulp.watch(imgSource, ['clean-images', 'images', 'images-webp']);
-	gulp.watch(svgSource, ['svg-store']);
+	gulp.watch(config.htmlPhpSource, browserSync.reload);
+	gulp.watch(config.fonts.source, ['clean-fonts', 'fonts']);
+	gulp.watch(config.images.source, ['clean-images', 'images', 'images-webp']);
+	gulp.watch(config.svg.source, ['svg-store']);
 });
 
 // Build Sequences - just run gulp and it will start from here

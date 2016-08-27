@@ -4,7 +4,7 @@
 }
 
 //Declare your svg icons - just paste svg code
-@mixin svg-arrow($fg-color:#B5CCD7, $repeat: no-repeat) {
+@mixin svg-arrow($fg-color:#B99CD7, $repeat: no-repeat) {
   $encode: "data:image/svg+xml;charset=utf-8,";
   $svg: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 20'><path d='M10,0l2,2l-8,8l8,8l-2,2L0,10L10,0z' fill='#{url-friendly-colour($fg-color)}'/></svg>";
 

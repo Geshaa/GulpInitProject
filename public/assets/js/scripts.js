@@ -124,10 +124,10 @@ return Browser;
 
 /*jshint ignore:end */
 
-/* global console:false */
+/* global console:false, alert: false */
 (function() {
     'use strict';
-    console.log('scripts lastttt 12234');
+    console.log('scripts lastttt 12334');
 
 
     //var font = new FontFaceObserver('My Family', {
