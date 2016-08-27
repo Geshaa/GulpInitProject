@@ -1,0 +1,18 @@
+$mobileS:          	360px;
+
+$mobile:           	480px;
+
+$mobileL:          	540px;
+
+$tabletPortrait:	768px;
+
+$tabletAndMobile:  	1024px;
+
+$desktop:          	1025px;
+
+$desktopAndMore:  	1280px;
+
+
+@media screen and (min-width: $desktop)  {
+	//hovers here
+}

@@ -16,6 +16,7 @@ var plumber			= require('gulp-plumber');
 var svgstore 		= require('gulp-svgstore');
 var svgmin		 	= require('gulp-svgmin');
 var webp 			= require('gulp-webp');
+var htmlmin 		= require('gulp-htmlmin');
 
 
 var fs				= require('fs');
@@ -31,15 +32,14 @@ var scssSource		= 'src/scss/**/*.scss';
 var scssDestination = 'public/assets/css';
 var outputCSSFile 	= 'styles.css';
 
-//var jsSource		= ['src/js/**/!(scripts)*.js', 'src/js/scripts.js'];
-var jsSource		= ['src/js/**/!(scripts)*.js', 'src/js/scripts.js'];
+// var jsSource		= ['src/js/**/!(scripts)*.js', 'src/js/scripts.js'];
 
 var jsSource = [];
 
 for(var i in config.scripts) {
-	//console.log(i, config[i]);
 	jsSource.push('src/js/modules/'+config.scripts[i]+'.js');
 }
+
 jsSource.push('src/js/scripts.js');
 
 var jsOutputFile	= 'scripts.js'
@@ -94,23 +94,30 @@ gulp.task('sass', function() {
 //for production  - css nano
 gulp.task('cssnano', function() {
 	return gulp.src(scssSource)
-			.pipe(cssnano())
-			.pipe(gulp.dest(scssDestination))
+		.pipe(cssnano())
+		.pipe(gulp.dest(scssDestination))
+});
+
+//for production - minify html
+gulp.task('html', function() {
+	return gulp.src(htmlPhpSource)
+    .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(gulp.dest('public/'));
 });
 
 //js files
 gulp.task('scripts', function() {
 	return gulp.src(jsSource)
-			.pipe(plumber({
-				errorHandler: onError
-			}))
-			.pipe(jshint())
-			.pipe(jshint.reporter('default'))
-			.pipe(concat(jsOutputFile))
-			.pipe(gulp.dest(jsOutputPath))
-			.pipe(rename(jsOutputMini))
-			.pipe(uglify())
-			.pipe(gulp.dest(jsOutputPath))
+		.pipe(plumber({
+			errorHandler: onError
+		}))
+		.pipe(jshint())
+		.pipe(jshint.reporter('default'))
+		.pipe(concat(jsOutputFile))
+		.pipe(gulp.dest(jsOutputPath))
+		.pipe(rename(jsOutputMini))
+		.pipe(uglify())
+		.pipe(gulp.dest(jsOutputPath))
 })
 
 // delete fonts
@@ -135,7 +142,12 @@ gulp.task('images', function() {
 		.pipe(imagemin({
 			interlaced: true,
 		}))
-			.pipe(webp({quality: 100}))
+		.pipe(gulp.dest(imgDestination))
+});
+
+gulp.task('images-webp', function() {
+	return gulp.src(imgSource)
+		.pipe(webp({quality: 100}))
 		.pipe(gulp.dest(imgDestination))
 });
 
@@ -148,32 +160,34 @@ gulp.task('svg-store', function () {
 		.pipe(gulp.dest(svgDestination));
 });
 
+
 //watch
 gulp.task('watch', function() {
 	gulp.watch(scssSource, ['sass']);
 	gulp.watch(jsSource, ['scripts', browserSync.reload]);
 	gulp.watch(htmlPhpSource, browserSync.reload);
 	gulp.watch(fontsSource, ['clean-fonts', 'fonts']);
-	gulp.watch(imgSource, ['clean-images', 'images']);
+	gulp.watch(imgSource, ['clean-images', 'images', 'images-webp']);
 	gulp.watch(svgSource, ['svg-store']);
 });
 
-// Build Sequences
+// Build Sequences - just run gulp and it will start from here
 gulp.task('default', function(callback) {
 	runSequence(['sass', 'browserSync', 'watch'],
-			callback
+		callback
 	)
 })
 
 // Main task before production
- gulp.task('production', function(callback) {
-   runSequence(
-      'sass',
-   	  'scripts',
-      'cssnano',
-	  'clean-fonts',
-   	  'clean-images'
-     ['images', 'fonts'],
-     callback
-   )
- })
+gulp.task('production', function(callback) {
+   	runSequence(
+		'sass',
+		'cssnano',
+		'scripts',
+		'html',
+		'clean-fonts',
+		'clean-images',
+		['images', 'fonts'],
+		callback
+    )
+})

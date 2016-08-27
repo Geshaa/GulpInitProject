@@ -1,48 +1,47 @@
+@import "modules/reset.scss";
 @import "sprite.scss";
-@import 'https://fonts.googleapis.com/css?family=Baloo+Chettan|Baloo+Paaji|Baloo+Tamma|Lato|Open+Sans|Oswald|Roboto|Slabo+27px';
 
-@font-face {
-	font-family: "VarelaRound";
-	src: url('../fonts/VarelaRound-Regular.ttf');
+html {
+	font-size: 16px;
 }
 
-$color: green;
-
-body {
-	//font-family: 'VarelaRound';
-
-	font-family: 'Baloo Paaji', cursive;
+html, body {
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-text-size-adjust: 100%;
+	font-family: sans-serif;
+	-webkit-overflow-scrolling: touch;
+	backface-visibility: hidden;
+	-webkit-touch-callout: none;
 }
 
-h1 {
-  width: percentage(5/7);
-  color: $color;
-  font-size: 4rem;
-  text-decoration: none;
+input {
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	-webkit-appearance: none;
+
+	&[type=number]::-webkit-outer-spin-button, &[type=number]::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+	}
 }
 
-h2 {
-	color: green;
-	display: flex;
-}
-
-
-abbr {
-	font-size: 20px;
+input[type=number] {
+    -moz-appearance:textfield;
 }
 
 
-h3 {
-	background: red;
-}
+
+//sample test
+// h1 {
+//   width: percentage(5/7);
+//   font-size: 4rem;
+//   padding: 20px;
+// }
 
 
-h5 {
-	border-width: 10px;
-}
+// .icon-back {
+// 	@include svg-arrow(#6f0043);
+// }
 
-.icon-back {
-	@include svg-arrow(#6f0043);
-}
 
-@import "modules/responsive.scss";
+@import "modules/mediaQueries.scss";

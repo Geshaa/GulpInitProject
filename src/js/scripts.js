@@ -1,7 +1,7 @@
 /* global console:false */
 (function() {
     'use strict';
-    console.log('scripts lastttt 1234');
+    console.log('scripts lastttt 12234');
 
 
     //var font = new FontFaceObserver('My Family', {

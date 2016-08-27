@@ -1,12 +1,16 @@
 {
   "name": "gruntinitproject",
   "version": "1.0.1",
-  "description": "Gulp configuration for web development.",
-  "main": "index.js",
+  "description": "Gulp configuration for web development. Created by G.Ivanov, find me on http://givanov.eu",
+  "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Georgi Ivanov",
+  "author": {
+    "name": "Georgi Ivanov",
+    "email": "development@givanov.eu",
+    "url": "http://givanov.eu"
+  },
   "license": "MIT",
   "devDependencies": {
     "browser-sync": "^2.14.0",
@@ -16,6 +20,7 @@
     "gulp-change": "^1.0.0",
     "gulp-concat": "^2.6.0",
     "gulp-cssnano": "^2.1.2",
+    "gulp-htmlmin": "^2.0.0",
     "gulp-iife": "^0.3.0",
     "gulp-imagemin": "^3.0.3",
     "gulp-jshint": "^2.0.1",
