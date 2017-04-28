@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title>Gulp Init Project</title>
-	<link rel="stylesheet" href="assets/css/styles.css?<php echo date('mdYhis');?>">
+	<link rel="stylesheet" href="assets/css/styles.css?<?php echo date('mdYhis');?>">
 </head>
 <body>
 	<?php $file = 'assets/svg/svg.svg'; if(file_exists($file)) { include($file); } ?>
@@ -14,6 +14,6 @@
 	</svg>
 	<h1>test1 2 4</h1>
 	<h1>test1 2 4</h1>
-	<script src="assets/js/scripts.js?<php echo date('mdYhis');?>"></script>
+	<script src="assets/js/scripts.js?<?php echo date('mdYhis');?>"></script>
 </body>
 </html>

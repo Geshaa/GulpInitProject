@@ -17,6 +17,7 @@ var svgstore 		= require('gulp-svgstore');
 var svgmin		 	= require('gulp-svgmin');
 var webp 			= require('gulp-webp');
 var htmlmin 		= require('gulp-htmlmin');
+var spawn 			= require('child_process').spawn;
 
 //configuration - based on config.json
 var fs				= require('fs');
@@ -135,6 +136,20 @@ gulp.task('svg-store', function () {
 		.pipe(gulp.dest(config.svg.destination));
 });
 
+gulp.task('auto-reload', function() {
+	var p;
+
+	//if you want just to stop gulp when gulpfile.js is changed uncomment these lines and comment lines beloww
+	spawn('gulp', [], {stdio: 'inherit'});
+ 	process.exit();
+
+	// if(p) {
+	// 	p.kill();
+	// }
+
+	// p = spawn('gulp.cmd', ['default'], {stdio: 'inherit'});
+});
+
 //watch
 gulp.task('watch', function() {
 	gulp.watch(config.sass.scssSource, ['sass']);
@@ -143,7 +158,9 @@ gulp.task('watch', function() {
 	gulp.watch(config.fonts.source, ['clean-fonts', 'fonts']);
 	gulp.watch(config.images.source, ['clean-images', 'images', 'images-webp']);
 	gulp.watch(config.svg.source, ['svg-store']);
+	gulp.watch('gulpfile.js', ['auto-reload']);
 });
+
 
 // Build Sequences - just run gulp and it will start from here
 gulp.task('default', function(callback) {
